@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap" rel="stylesheet">
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Jogo da Serpente</title>
+
+        <link rel="stylesheet" href="./styles.css">
+    <script>
+
+      let interval;
+      let speed = 150;
+      let board;
+      let points = 0;
+      let food = {x:10, y:10};
+      let position = {x:3 , y:3};
+      let snake = [{x:3,y:3,body:11}];
+      let key = "ArrowRight";
+      let pieces = {
+        0: "board.png",
+        1: "apple.png",
+        2: "border.png",
+        3: "body_bottomleft.png",
+        4: "body_bottomright.png",
+        5: "body_horizontal.png",
+        6: "body_topleft.png",
+        7: "body_topright.png",
+        8: "body_vertical.png",
+        9: "head_down.png",
+        10: "head_left.png",
+        11: "head_right.png",
+        12: "head_up.png",
+        13: "tail_down.png",
+        14: "tail_left.png",
+        15: "tail_right.png",
+        16: "tail_up.png",
+      };
+      
+      let moves = {
+        ArrowLeft: {x:-1,y:0,body:10, invalid:"ArrowRight"},
+        ArrowRight: {x:1,y:0,body:11, invalid:"ArrowLeft"},
+        ArrowUp: {x:0,y:-1,body:12, invalid:"ArrowDown"},
+        ArrowDown: {x:0,y:1,body:9, invalid:"ArrowUp"},
+      };
+
+      let show = () => {
+        board = Array.from({length:20}, (e,i1) => Array.from({length:20}, (e,i2)=>(i1>0&&i1<19&&i2>0&&i2<19)?0:2)); 
+        board[food.y][food.x] = 1;
+        snake.forEach( e => board[e.y][e.x] = e.body);
+        document.getElementById('idBoard').innerHTML = board.flat().map( e =>`<img src="img/${pieces[e]}"/>`).join('');
+      }
+
+      let move = () => {
+        position.x += (moves[key]?.x || 0);
+        position.y += (moves[key]?.y || 0);
+        if (board[position.y][position.x] > 1) {
+          window.clearInterval(interval);
+          document.getElementById('idBoard').innerHTML =`<img class="gameOver" src="img/game-over.gif"/>`;
+          
+          document.getElementById('idReiniciar').innerHTML = `<button id="idReiniciar" onclick="reiniciar()">Reiniciar Jogo</button>`;
+          return;
+        };
+
+        snake.unshift({x:position.x,y:position.y,body:moves[key]?.body});
+
+        if (snake.length > 2) {
+          let x= snake[0].x - snake[2].x;
+          let y= snake[0].y - snake[2].y;
+          if (x==0) snake[1].body = 8;
+          else if (y==0) snake[1].body = 5;
+          else if (x>0) {
+            if (snake[1].y > snake[2].y) snake[1].body = 7;
+            else if (snake[1].y < snake[2].y) snake[1].body = 4;
+            else {
+              if (snake[1].y > snake[0].y) snake[1].body = 6;
+              else snake[1].body = 3;
+            } 
+          } else {
+            if (snake[1].y > snake[2].y) snake[1].body = 6;
+            else if (snake[1].y < snake[2].y) snake[1].body = 3;
+            else {
+              if (snake[1].y > snake[0].y) snake[1].body = 7;
+              else snake[1].body = 4;
+            }
+          }
+        }
+
+        if (board[position.y][position.x] == 1) {
+          document.getElementById('idPoints').innerHTML = ++points;
+          while (true){
+            food.x = parseInt(Math.random()*18)+1;
+            food.y = parseInt(Math.random()*18)+1;
+            if (board[food.y][food.x] == 0) break;
+          }
+          if (snake.length < 10 ) speed=speed*0.97;
+          else if (snake.length < 20 ) speed=speed*0.98;
+          else speed = speed*0.99;
+          window.clearInterval(interval);
+          interval = window.setInterval(move,parseInt(speed)); 
+        } else {
+          snake.pop();
+        }
+
+        let len = snake.length;
+        if (len>1){
+          let x = snake[len-1].x - snake[len-2].x;
+          let y = snake[len-1].y - snake[len-2].y;
+          if (x>0) snake[len-1].body = 15;
+          else if(x<0) snake[len-1].body = 14;
+          else if (y>0) snake[len-1].body = 13;
+          else snake[len-1].body = 16;
+        }
+        
+        show();
+      }
+
+      let setKey = e => {
+        if(moves[e.key] && moves[key].invalid != e.key)
+          key = e.key;
+      };
+
+      document.addEventListener('keydown', setKey);
+      interval = window.setInterval(move,speed);
+      
+      function reiniciar() {
+        points = 0;
+        speed = 150;
+        food = {x:10, y:10};
+        position = {x:3 , y:3};
+        snake = [{x:3,y:3,body:11}];
+        key = "ArrowRight";
+        window.clearInterval(interval);
+        interval = window.setInterval(move,parseInt(speed));
+        document.getElementById('idPoints').innerHTML = points;
+        document.getElementById('idReiniciar').innerHTML = "";
+        show();
+      }
+
+    </script>
+  </head>
+  <body onload="show()">
+    <div class="teste">
+      
+    </div>
+    <div class="container">
+      
+        <div class="idBoard" id="idBoard">
+        </div>
+    </div> 
+    <div class="idPoints">
+      <p>Pontos: <span id="idPoints">0</span></p>
+    </div>
+    <div class="idReiniciar" id="idReiniciar">
+  
+    </div>
+    
+    <section>
+      <div class="social-list">
+          <h2>Tiago Raupp da Rosa</h2>
+          <ul >
+              <li>
+                  <a 
+                  target="_blank"
+                  href="https://www.linkedin.com/in/tiago-raupp/">  
+                    <svg width="36" height="36" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M20.9716667,33.5527338 L25.001,33.5527338 L25.001,27.1328007 C25.001,25.439485 25.3213333,23.7988354 27.4206667,23.7988354 C29.491,23.7988354 29.517,25.7351486 29.517,27.2404662 L29.517,33.5527338 L33.5506667,33.5527338 L33.5506667,26.4341413 C33.5506667,22.9381777 32.796,20.2505391 28.711,20.2505391 C26.7483333,20.2505391 25.432,21.3265278 24.8943333,22.3471839 L24.839,22.3471839 L24.839,20.5725357 L20.9716667,20.5725357 L20.9716667,33.5527338 Z M16.423,14.1202696 C15.1273333,14.1202696 14.0823333,15.1682587 14.0823333,16.4595785 C14.0823333,17.7508984 15.1273333,18.7992208 16.423,18.7992208 C17.7133333,18.7992208 18.761,17.7508984 18.761,16.4595785 C18.761,15.1682587 17.7133333,14.1202696 16.423,14.1202696 L16.423,14.1202696 Z M14.4026667,33.5527338 L18.4406667,33.5527338 L18.4406667,20.5725357 L14.4026667,20.5725357 L14.4026667,33.5527338 Z M9.76633333,40 C8.79033333,40 8,39.2090082 8,38.2336851 L8,9.76631493 C8,8.79065843 8.79033333,8 9.76633333,8 L38.234,8 C39.2093333,8 40,8.79065843 40,9.76631493 L40,38.2336851 C40,39.2090082 39.2093333,40 38.234,40 L9.76633333,40 Z" id="Shape" fill="#007BB5"></path>
+                    </svg>
+                  </a>
+              </li>
+              <li>
+                  <a 
+                  target="_blank"
+                  href="https://www.instagran.com/tiraupp"> 
+                      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M16 21C18.7614 21 21 18.7614 21 16C21 13.2386 18.7614 11 16 11C13.2386 11 11 13.2386 11 16C11 18.7614 13.2386 21 16 21Z" stroke="#FA41FE" stroke-width="2" stroke-miterlimit="10"/>
+                          <path d="M21.5 4.5H10.5C7.18629 4.5 4.5 7.18629 4.5 10.5V21.5C4.5 24.8137 7.18629 27.5 10.5 27.5H21.5C24.8137 27.5 27.5 24.8137 27.5 21.5V10.5C27.5 7.18629 24.8137 4.5 21.5 4.5Z" stroke="#FA41FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          <path d="M22.5 11C23.3284 11 24 10.3284 24 9.5C24 8.67157 23.3284 8 22.5 8C21.6716 8 21 8.67157 21 9.5C21 10.3284 21.6716 11 22.5 11Z" fill="#FA41FE"/>
+                      </svg>          
+                  </a>
+              </li>
+              <li>
+                  <a 
+                  target="_blank"
+                  href="https://www.twitter.com/tiraupp">
+                      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M16 11C16 8.25003 18.3125 5.96253 21.0625 6.00003C22.0256 6.01115 22.9649 6.30018 23.7676 6.83237C24.5704 7.36457 25.2023 8.11728 25.5875 9.00003H30L25.9625 13.0375C25.7019 17.0932 23.9066 20.8975 20.9415 23.6769C17.9764 26.4562 14.0641 28.002 10 28C6 28 5 26.5 5 26.5C5 26.5 9 25 11 22C11 22 3 18 5 7.00003C5 7.00003 10 12 16 13V11Z" stroke="#2871FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>   
+                  </a>
+              </li>
+              <li>
+                  <a 
+                  target="_blank"
+                  href="https://www.youtube.com/tiraupp">
+                      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M20 16L14 12V20L20 16Z" stroke="#F40000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          <path d="M3 16C3 19.725 3.3875 21.9 3.675 23.025C3.75427 23.3302 3.90418 23.6126 4.11262 23.8493C4.32106 24.0859 4.58221 24.2703 4.875 24.3875C9.0625 25.9875 16 25.95 16 25.95C16 25.95 22.9375 25.9875 27.125 24.3875C27.4178 24.2703 27.6789 24.0859 27.8874 23.8493C28.0958 23.6126 28.2457 23.3302 28.325 23.025C28.6125 21.9 29 19.725 29 16C29 12.275 28.6125 10.1 28.325 8.975C28.2457 8.66975 28.0958 8.38741 27.8874 8.15074C27.6789 7.91407 27.4178 7.7297 27.125 7.6125C22.9375 6.0125 16 6.05 16 6.05C16 6.05 9.0625 6.0125 4.875 7.6125C4.58221 7.7297 4.32106 7.91407 4.11262 8.15074C3.90418 8.38741 3.75427 8.66975 3.675 8.975C3.3875 10.1 3 12.275 3 16Z" stroke="#F40000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg> 
+                  </a>
+              </li>
+              <li>
+                <a 
+                target="_blank"
+                href="https://github.com/tiraupp">
+                    <svg width="25" height="25" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M7.69484 0C5.86746 0.000948126 4.09999 0.648173 2.70849 1.82594C1.31698 3.00371 0.392183 4.63523 0.0994448 6.42875C-0.193293 8.22228 0.165119 10.0609 1.1106 11.6157C2.05608 13.1706 3.52698 14.3404 5.26027 14.9159C5.64266 14.9869 5.7867 14.7499 5.7867 14.5484C5.7867 14.3469 5.77905 13.7626 5.7765 13.1239C3.6351 13.5864 3.1826 12.2202 3.1826 12.2202C2.83335 11.333 2.32859 11.0998 2.32859 11.0998C1.63009 10.6258 2.38086 10.6347 2.38086 10.6347C3.15456 10.6892 3.56118 11.4243 3.56118 11.4243C4.24693 12.5941 5.36224 12.2557 5.80072 12.058C5.86955 11.5624 6.06967 11.2253 6.29018 11.0339C4.57961 10.8413 2.78236 10.1848 2.78236 7.25202C2.77176 6.49143 3.05562 5.75589 3.5752 5.19758C3.49617 5.00493 3.23231 4.22676 3.6504 3.16975C3.6504 3.16975 4.29665 2.96443 5.76758 3.95427C7.02926 3.6112 8.36042 3.6112 9.6221 3.95427C11.0918 2.96443 11.7367 3.16975 11.7367 3.16975C12.1561 4.22422 11.8922 5.0024 11.8132 5.19758C12.3344 5.75598 12.6189 6.4928 12.6073 7.25456C12.6073 10.1936 10.8062 10.8413 9.09312 11.0301C9.36844 11.2684 9.61445 11.7335 9.61445 12.4483C9.61445 13.4724 9.60553 14.2962 9.60553 14.5484C9.60553 14.7525 9.74446 14.9907 10.1345 14.9159C11.868 14.3403 13.339 13.1703 14.2845 11.6152C15.23 10.0601 15.5882 8.22119 15.2951 6.4275C15.0021 4.63381 14.0768 3.00228 12.6848 1.82471C11.2929 0.647145 9.52499 0.000347157 7.69739 0H7.69484Z" fill="white"/>
+                      <path d="M3.22442 11.3356C3.19802 11.3488 3.16782 11.3525 3.13899 11.346C3.11016 11.3395 3.08449 11.3233 3.06636 11.3001C3.01665 11.2468 3.00645 11.1733 3.04469 11.1404C3.08293 11.1074 3.15177 11.1226 3.20148 11.1759C3.25119 11.2291 3.26266 11.3026 3.22442 11.3356Z" fill="white"/>
+                    </svg> 
+                </a>
+            </li>
+            
+          </ul>
+          <p >versão 1.0.0</p>
+      </div>
+  </section>
+
+  </body>
+</html>
