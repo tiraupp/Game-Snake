@@ -4,7 +4,7 @@
 
 Projeto construído em aulas com Alfamídia.
 
-[🔗 Clique aqui para acessar](https://tiraupp.github.io/JogoSerpente/)
+[🔗 Clique aqui para acessar](https://tiraupp.github.io/Game-Snake/)
 
 ## 🛠 Tecnologias
 
