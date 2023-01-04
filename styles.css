@@ -52,6 +52,9 @@ P {
 
 .idControlDown {
     width: 100vw;
+    margin-top: 10px;
+    gap: 10px;
+    margin-bottom: 10px;
     display: flex;
     justify-content: center;
 }
@@ -61,6 +64,7 @@ ul {
     gap: 36px;
     margin-top: 4px;
     list-style: none;
+    font-color: blue;
 }
 
 section {
