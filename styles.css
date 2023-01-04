@@ -68,7 +68,7 @@ section {
     background-image: linear-gradient(90deg, #9572FC 0%, #43E7AD 50.52%, #E2D45C 100%);
     padding-top: 10px;
     border-radius: 10px;
-    position:absolute;
+    position:bottom;
 	bottom:0px;
 	width:100%;
 }
