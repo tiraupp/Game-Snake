@@ -10,7 +10,7 @@ img {
     height: 20px;
 }
 
-.idReiniciar {
+P {
     width: 100vw; 
     display: flex;
     justify-content: center;
@@ -38,10 +38,29 @@ img {
     justify-content: center;
 }
 
-.idReiniciar {
+.idRestart {
     width: 100vw; 
     display: flex;
     justify-content: center;
+}
+
+.idControlUp {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+}
+
+.idControlDown {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+}
+
+ul {
+    display: flex;
+    gap: 36px;
+    margin-top: 4px;
+    list-style: none;
 }
 
 section {
@@ -60,11 +79,22 @@ section div {
     border-radius: 10px;   
 }
 
+section h2 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    letter-spacing: -0.18px;
+    color: #AAAAAA;;
+    margin-left:10px;
+    margin-top: 4px;
+}
+
 section p {
     font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
     letter-spacing: -0.18px;
     color: #A1A1AA;
-    margin-left:90%;
+    justify-content: right;
+    margin-right: 10%;
     margin-top: -14px;
 }
 

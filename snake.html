@@ -60,8 +60,7 @@
         if (board[position.y][position.x] > 1) {
           window.clearInterval(interval);
           document.getElementById('idBoard').innerHTML =`<img class="gameOver" src="img/game-over.gif"/>`;
-          
-          document.getElementById('idReiniciar').innerHTML = `<button id="idReiniciar" onclick="reiniciar()">Reiniciar Jogo</button>`;
+          document.getElementById('idRestart').innerHTML = `<button id="idRestart" onclick="restart()">Reiniciar Jogo</button>`;
           return;
         };
 
@@ -126,7 +125,7 @@
       document.addEventListener('keydown', setKey);
       interval = window.setInterval(move,speed);
       
-      function reiniciar() {
+      function restart() {
         points = 0;
         speed = 150;
         food = {x:10, y:10};
@@ -136,28 +135,77 @@
         window.clearInterval(interval);
         interval = window.setInterval(move,parseInt(speed));
         document.getElementById('idPoints').innerHTML = points;
-        document.getElementById('idReiniciar').innerHTML = "";
+        document.getElementById('idRestart').innerHTML = "";
         show();
-      }
+      };
+
+      function ArrowUp() {
+        if(moves["ArrowUp"] && moves[key].invalid != "ArrowUp")
+          key = "ArrowUp";
+      };
+      function ArrowDown() {
+        if(moves["ArrowDown"] && moves[key].invalid != "ArrowDown")
+          key = "ArrowDown";
+      };
+      function ArrowRight() {
+        if(moves["ArrowRight"] && moves[key].invalid != "ArrowRight")
+          key = "ArrowRight";
+      };
+      function ArrowLeft() {
+        if(moves["ArrowLeft"] && moves[key].invalid != "ArrowLeft")
+          key = "ArrowLeft";
+      };
 
     </script>
   </head>
   <body onload="show()">
-    <div class="teste">
-      
-    </div>
+
     <div class="container">
-      
         <div class="idBoard" id="idBoard">
-        </div>
-    </div> 
+
+        </div> 
+    </div>
+
+    <p><img src="img/apple.png"/> : <img src="img/board.png"/><span id="idPoints"> 0 </span></p>
+
     <div class="idPoints">
-      <p>Pontos: <span id="idPoints">0</span></p>
+      
     </div>
-    <div class="idReiniciar" id="idReiniciar">
-  
+    <div class="idControl">
+      <div class="idControlUp">
+        <ul>
+          <li onclick="ArrowUp()">
+            <svg width="30" height="30" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" >
+              <path d="M32 2C15.432 2 2 15.432 2 32s13.432 30 30 30s30-13.432 30-30S48.568 2 32 2zm5.143 28.305V49H26.857V30.305H16L32 15l16 15.305H37.143z" fill="#000000"></path>
+            </svg>
+          </li>
+        </ul>
+      </div>
+      <div class="idControlDown">
+        <ul >
+          <li onclick="ArrowLeft()">
+            <svg width="30" height="30" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" >
+              <path d="M32 2C15.432 2 2 15.432 2 32c0 16.568 13.432 30 30 30s30-13.432 30-30C62 15.432 48.568 2 32 2zm17 35.428H30.307V48L15 32l15.307-16v11.143H49v10.285z" fill="#000000"></path>
+            </svg>
+          </li>
+          <li onclick="ArrowDown()">
+            <svg width="30" height="30" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" >
+              <path d="M32 2C15.432 2 2 15.432 2 32s13.432 30 30 30s30-13.432 30-30S48.568 2 32 2zm0 47L16 33.695h10.857V15h10.285v18.695H48L32 49z" fill="#000000"></path>
+            </svg>
+          </li>
+          <li onclick="ArrowRight()">
+            <svg width="30" height="30" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" >
+              <path d="M32 2C15.432 2 2 15.432 2 32c0 16.568 13.432 30 30 30s30-13.432 30-30C62 15.432 48.568 2 32 2zm1.693 46V37.428H15V27.143h18.693V16L49 32L33.693 48z" fill="#000000"></path>
+            </svg>
+          </li>
+        </ul>
+      </div>
     </div>
-    
+
+    <div class="idRestart" id="idRestart">
+
+    </div>
+
     <section>
       <div class="social-list">
           <h2>Tiago Raupp da Rosa</h2>
@@ -213,7 +261,7 @@
             </li>
             
           </ul>
-          <p >versão 1.0.0</p>
+          <p >versão 1.0.1</p>
       </div>
   </section>
 
