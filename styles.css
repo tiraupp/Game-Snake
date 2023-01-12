@@ -52,19 +52,11 @@ P {
 
 .idControlDown {
     width: 100vw;
-    margin-top: 15px;
-    gap: 15px;
-    margin-bottom: 15px;
+    margin-top: 30px;
+    gap: 30px;
+    margin-bottom: 30px;
     display: flex;
     justify-content: center;
-}
-
-ul {
-    display: flex;
-    gap: 36px;
-    margin-top: 4px;
-    list-style: none;
-    font-color: blue;
 }
 
 section {
@@ -72,8 +64,8 @@ section {
     background-image: linear-gradient(90deg, #9572FC 0%, #43E7AD 50.52%, #E2D45C 100%);
     padding-top: 10px;
     border-radius: 10px;
-    position:bottom;
-	bottom:0px;
+    position:absolute;
+	bottom:-2px;
 	width:100%;
 }
 
@@ -98,14 +90,13 @@ section p {
     letter-spacing: -0.18px;
     color: #A1A1AA;
     justify-content: right;
-    margin-right: 10%;
-    margin-top: -14px;
+    margin-left: -10px;
 }
 
 section ul {
     display: flex;
     gap: 36px;
-    margin-top: 4px;
+    margin-bottom: -2px;
     list-style: none;
 }
 
@@ -113,3 +104,67 @@ section ul li:hover {
     transform: scale(1.2);
 }
 
+@media screen and (min-width: 800px) {
+    .idControl {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    img {
+        width: 16px;
+        height: 16px;
+    }
+    .gameOver {
+        width: 320px;
+        height: 320px;
+    }
+    .idBoard {
+        width: 320px;
+        font-size: 0; 
+    }
+    section {
+        color: white;
+        background-image: linear-gradient(90deg, #9572FC 0%, #43E7AD 50.52%, #E2D45C 100%);
+        padding-top: 3px;
+        border-radius: 3px;
+        position:absolute;
+        bottom:-4px;
+        width:100%;
+    }
+    section div {
+        background-color: #2a2634;
+        padding-top: 3px;
+        border-radius: 3px;   
+    }
+    
+    section h2 {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 18px;
+        letter-spacing: -0.18px;
+        color: #AAAAAA;;
+        margin-left:10px;
+        margin-top: 2px;
+        margin-bottom: 2px;
+    }
+    
+    section p {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 10px;
+        letter-spacing: -0.18px;
+        color: #A1A1AA;
+        justify-content: right;
+        margin-left: -10px;
+    }
+    
+    section ul {
+        display: flex;
+        gap: 36px;
+        margin-bottom: 2px;
+        list-style: none;
+    }
+    
+    section ul li:hover {
+        transform: scale(1.2);
+    }
+}
