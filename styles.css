@@ -34,7 +34,6 @@ P {
 
 .idPoints {
     width: 100vw; 
-    display: flex;
     justify-content: center;
 }
 
@@ -122,6 +121,11 @@ section ul li:hover {
     .idBoard {
         width: 320px;
         font-size: 0; 
+    }
+    .idPoints {
+        width: 100vw; 
+        display: flex;
+        justify-content: center;
     }
     section {
         //display: none;
